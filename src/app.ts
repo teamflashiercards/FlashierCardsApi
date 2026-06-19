@@ -1,17 +1,18 @@
 import { Hono } from "hono";
+import { cors } from "hono/cors";
 import deckRoutes from "./routes/deck.ts";
 import cardRoutes from "./routes/card.ts";
-import { cors } from "hono/cors";
 import profileRoutes from "./routes/profile.ts";
 
 const app = new Hono();
 
-app.use("*", cors({
+// cors middleware
+app.use("/api/*", cors({
     origin: "https://flashiercardswebv2.pages.dev",
     allowHeaders: ["Content-Type", "Authorization"],
-    allowMethods: ["POST", "GET", "PUT", "DELETE", "OPTIONS"],
-    credentials: true,
-    maxAge: 600
+    allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    maxAge: 600,
+    credentials: true
 }));
 
 // mount routes

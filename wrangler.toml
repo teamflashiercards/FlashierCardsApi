@@ -1,4 +1,4 @@
-name = "flashier-cards-api"
+name = "flashiercardsapi"
 main = "src/app.ts"
-compatibility_date = "2026-06-10"
+compatibility_date = "2026-06-1"
 compatibility_flags = ["nodejs_compat"]
