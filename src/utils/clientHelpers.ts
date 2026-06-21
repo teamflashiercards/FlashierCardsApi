@@ -4,6 +4,7 @@ import type { Text } from "../types/text.ts";
 import type { Gif } from "../types/gif.ts";
 import type { Sticker } from "../types/sticker.ts";
 
+// function creates a new row in the card table
 export const insertCard = async (supabase: SupabaseClient, card: Card) => {
     const response = await supabase
     .from("card")
@@ -16,6 +17,7 @@ export const insertCard = async (supabase: SupabaseClient, card: Card) => {
     return response;
 };
 
+// function updates a row in the card table
 export const updateCard = async (supabase: SupabaseClient, card: Card) => {
     const response = await supabase
     .from("card")
@@ -27,15 +29,7 @@ export const updateCard = async (supabase: SupabaseClient, card: Card) => {
     return response;
 };
 
-export const deleteCard = async (supabase: SupabaseClient, card: Card) => {
-    const response = await supabase
-    .from("card")
-    .delete()
-    .eq("id", card.id)
-    .select();
-    return response;
-};
-
+// function creates a new row in the text table
 export const insertText = async (supabase: SupabaseClient, text: Text) => {
     const response = await supabase
     .from("text")
@@ -51,6 +45,7 @@ export const insertText = async (supabase: SupabaseClient, text: Text) => {
     return response;
 };
 
+// function updates a row in the text table
 export const updateText = async (supabase: SupabaseClient, text: Text) => {
     const response = await supabase
     .from("text")
@@ -66,6 +61,7 @@ export const updateText = async (supabase: SupabaseClient, text: Text) => {
     return response;
 };
 
+// function creates a new row in the gif table
 export const insertGif = async (supabase: SupabaseClient, gif: Gif) => {
     const response = await supabase
     .from("gif")
@@ -81,6 +77,7 @@ export const insertGif = async (supabase: SupabaseClient, gif: Gif) => {
     return response;
 };
 
+// function updates a row in the gif table
 export const updateGif = async (supabase: SupabaseClient, gif: Gif) => {
     const response = await supabase
     .from("gif")
@@ -96,6 +93,7 @@ export const updateGif = async (supabase: SupabaseClient, gif: Gif) => {
     return response;
 };
 
+// function creates a new row in the sticker table
 export const insertSticker = async (supabase: SupabaseClient, sticker: Sticker) => {
     const response = await supabase
     .from("sticker")
@@ -111,6 +109,7 @@ export const insertSticker = async (supabase: SupabaseClient, sticker: Sticker) 
     return response;
 };
 
+// function updates a row in the sticker table
 export const updateSticker = async (supabase: SupabaseClient, sticker: Sticker) => {
     const response = await supabase
     .from("sticker")

@@ -20,8 +20,6 @@ app.get("/", async (ctx: Context) => {
     
     if (response.error) {
         return ctx.json(response.error, 400);
-    } else if (response.data.length === 0) {
-        return ctx.json({ message: "User profile does not exist." }, 400);
     }
 
     return ctx.json(response.data, 200);
@@ -52,8 +50,6 @@ app.post("/", async (ctx: Context) => {
 
     if (response.error) {
         return ctx.json(response.error, 400);
-    } else if (response.data.length === 0) {
-        return ctx.json({ message: "User profile was not created." }, 400);
     }
 
     return ctx.json(response.data, 200);
@@ -79,8 +75,6 @@ app.put("/:id", async (ctx: Context) => {
 
     if (response.error) {
         return ctx.json(response.error, 400);
-    } else if (response.data.length === 0) {
-        return ctx.json({ message: `User profile with id ${profileId} does not exist.` }, 400);
     }
 
     return ctx.json(response.data, 200);

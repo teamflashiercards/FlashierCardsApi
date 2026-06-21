@@ -39,8 +39,6 @@ app.post("/", async (ctx: Context) => {
 
     if (response.error) {
         return ctx.json(response.error, 400);
-    } else if (response.data.length === 0) {
-        return ctx.json({ message: "Deck was not created." }, 400);
     }
 
     return ctx.json(response.data, 200);
@@ -66,8 +64,6 @@ app.put("/:id", async (ctx: Context) => {
 
     if (response.error) {
         return ctx.json(response.error, 400);
-    } else if (response.data.length === 0) {
-        return ctx.json({ message: `Deck with id ${deckId} does not exist.`}, 400);
     }
 
     return ctx.json(response.data, 200);
@@ -92,8 +88,6 @@ app.delete("/:id", async (ctx: Context) => {
 
     if (response.error) {
         return ctx.json(response.error, 400);
-    } else if (response.data.length === 0) {
-        return ctx.json({ message: `Deck with id ${deckId} does not exist.`}, 400);
     }
 
     return ctx.json(response.data, 200);
