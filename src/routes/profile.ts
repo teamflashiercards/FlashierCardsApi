@@ -1,6 +1,6 @@
 import { Hono } from "hono";
 import type { Context } from "hono";
-import { createSupabaseClient } from "../client.ts";
+import { createSupabaseClient } from "../utils/client.ts";
 
 const app = new Hono();
 
@@ -20,6 +20,8 @@ app.get("/", async (ctx: Context) => {
     
     if (response.error) {
         return ctx.json(response.error, 400);
+    } else if (response.data.length === 0) {
+        return ctx.json({ message: "User profile does not exist." }, 400);
     }
 
     return ctx.json(response.data, 200);
@@ -50,12 +52,14 @@ app.post("/", async (ctx: Context) => {
 
     if (response.error) {
         return ctx.json(response.error, 400);
+    } else if (response.data.length === 0) {
+        return ctx.json({ message: "User profile was not created." }, 400);
     }
 
     return ctx.json(response.data, 200);
 });
 
-// put /api/profile route updates user profile
+// put /api/profile route updates user profile based on user id
 app.put("/:id", async (ctx: Context) => {
     const profileId = ctx.req.param("id");
     const accessToken = ctx.req.header("Authorization")?.replace("Bearer ", "");
@@ -76,7 +80,7 @@ app.put("/:id", async (ctx: Context) => {
     if (response.error) {
         return ctx.json(response.error, 400);
     } else if (response.data.length === 0) {
-        return ctx.json({ message: `Profile with id ${profileId} does not exist.`}, 400);
+        return ctx.json({ message: `User profile with id ${profileId} does not exist.` }, 400);
     }
 
     return ctx.json(response.data, 200);

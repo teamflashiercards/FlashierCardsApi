@@ -1,17 +1,17 @@
 import { Hono } from "hono";
 import type { Context } from "hono";
-import { createSupabaseClient } from "../client.ts";
+import { createSupabaseClient } from "../utils/client.ts";
 
 const app = new Hono();
 
 // get /api/deck returns all decks
 app.get("/", async (ctx: Context) => {
-    
+    return ctx.json({ message: "returning all decks" }, 200);
 });
 
-// get /api/deck/id returns deck given id
+// get /api/deck/id returns deck based on deck id
 app.get("/:id", async (ctx: Context) => {
-
+    return ctx.json({ message: "returning the deck" }, 200);
 });
 
 // post /api/deck creates a new deck
@@ -39,12 +39,14 @@ app.post("/", async (ctx: Context) => {
 
     if (response.error) {
         return ctx.json(response.error, 400);
+    } else if (response.data.length === 0) {
+        return ctx.json({ message: "Deck was not created." }, 400);
     }
 
     return ctx.json(response.data, 200);
 });
 
-// put /api/deck/id updates a deck given id
+// put /api/deck/id updates a deck based on deck id
 app.put("/:id", async (ctx: Context) => {
     const deckId = ctx.req.param("id");
     const accessToken = ctx.req.header("Authorization")?.replace("Bearer ", "");
@@ -71,7 +73,7 @@ app.put("/:id", async (ctx: Context) => {
     return ctx.json(response.data, 200);
 });
 
-// delete /api/deck/id deletes a deck given id
+// delete /api/deck/id deletes a deck based on deck id
 app.delete("/:id", async (ctx: Context) => {
     const deckId = ctx.req.param("id");
     const accessToken = ctx.req.header("Authorization")?.replace("Bearer ", "");
