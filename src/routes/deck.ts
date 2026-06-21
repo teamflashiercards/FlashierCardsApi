@@ -4,17 +4,49 @@ import { createSupabaseClient } from "../utils/client.ts";
 
 const app = new Hono();
 
-// get /api/deck returns all decks
 app.get("/", async (ctx: Context) => {
-    return ctx.json({ message: "returning all decks" }, 200);
+    const accessToken = ctx.req.header("Authorization")?.replace("Bearer ", "");
+
+    if (!accessToken) {
+        return ctx.json({ message: "Please provide a valid token." }, 400);
+    }
+
+    const supabase = createSupabaseClient(ctx, accessToken);
+
+    const response = await supabase
+        .from("deck")
+        .select();
+
+    if (response.error) {
+        return ctx.json(response.error, 400);
+    }
+
+    return ctx.json(response.data, 200);
 });
 
-// get /api/deck/id returns deck based on deck id
 app.get("/:id", async (ctx: Context) => {
-    return ctx.json({ message: "returning the deck" }, 200);
+    const accessToken = ctx.req.header("Authorization")?.replace("Bearer ", "");
+
+    if (!accessToken) {
+        return ctx.json({ message: "Please provide a valid token." }, 400);
+    }
+
+    const id = ctx.req.param("id");
+    const supabase = createSupabaseClient(ctx, accessToken);
+
+    const response = await supabase
+        .from("deck")
+        .select()
+        .eq("id", id)
+        .single();
+
+    if (response.error) {
+        return ctx.json(response.error, 400);
+    }
+
+    return ctx.json(response.data, 200);
 });
 
-// post /api/deck creates a new deck
 app.post("/", async (ctx: Context) => {
     const accessToken = ctx.req.header("Authorization")?.replace("Bearer ", "");
 
