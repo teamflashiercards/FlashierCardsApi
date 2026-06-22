@@ -9,7 +9,7 @@ const app = new Hono();
 // get /api/deck/id/content returns deck content based on deck id
 app.get("/:id/content", async (ctx: Context) => {
     const accessToken = ctx.req.header("Authorization")?.replace("Bearer ", "");
-    if (!accessToken) return ctx.json({ message: "Please provide a valid token."}, 400);
+    if (!accessToken) return ctx.json({ message: "Please provide a valid token." }, 400);
 
     const supabase = createSupabaseClient(ctx, accessToken);
     const deckId = ctx.req.param("id");
@@ -37,7 +37,7 @@ app.get("/:id/content", async (ctx: Context) => {
 // post /api/deck/id/create creates initial deck content when a new deck is created
 app.post("/:id/create", async (ctx: Context) => {
     const accessToken = ctx.req.header("Authorization")?.replace("Bearer ", "");
-    if (!accessToken) return ctx.json({ message: "Please provide a valid token."}, 400);
+    if (!accessToken) return ctx.json({ message: "Please provide a valid token." }, 400);
 
     const supabase = createSupabaseClient(ctx, accessToken);
 
@@ -58,7 +58,7 @@ app.post("/:id/create", async (ctx: Context) => {
 // post /api/deck/id/save creates, updates, or deletes deck content when a deck is saved
 app.post("/:id/save", async (ctx: Context) => {
     const accessToken = ctx.req.header("Authorization")?.replace("Bearer ", "");
-    if (!accessToken) return ctx.json({ message: "Please provide a valid token."}, 400);
+    if (!accessToken) return ctx.json({ message: "Please provide a valid token." }, 400);
 
     const supabase = createSupabaseClient(ctx, accessToken);
 
@@ -75,7 +75,7 @@ app.post("/:id/save", async (ctx: Context) => {
         saveDeckHelper(supabase, updatedDeckContent.back_cards);
 
     } catch (error: any) {
-        return ctx.json(error.message, 400);
+        return ctx.json(error, 400);
     }
 
     return ctx.json({ message: `Content for deck with id ${deckId} was successfully saved.` }, 200);

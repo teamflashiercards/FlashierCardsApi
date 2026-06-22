@@ -7,7 +7,7 @@ const app = new Hono();
 // get /api/profile route returns user profile
 app.get("/", async (ctx: Context) => {
     const accessToken = ctx.req.header("Authorization")?.replace("Bearer ", "");
-    if (!accessToken) return ctx.json({ message: "Please provide a valid token."}, 400);
+    if (!accessToken) return ctx.json({ message: "Please provide a valid token." }, 400);
 
     const supabase = createSupabaseClient(ctx, accessToken);
     
@@ -22,7 +22,7 @@ app.get("/", async (ctx: Context) => {
 // post /api/profile route creates user profile
 app.post("/", async (ctx: Context) => {
     const accessToken = ctx.req.header("Authorization")?.replace("Bearer ", "");
-    if (!accessToken) return ctx.json({ message: "Please provide a valid token."}, 400);
+    if (!accessToken) return ctx.json({ message: "Please provide a valid token." }, 400);
     
     const supabase = createSupabaseClient(ctx, accessToken);
 
@@ -38,13 +38,13 @@ app.post("/", async (ctx: Context) => {
     .select();
 
     if (response.error) return ctx.json(response.error, 400);
-    return ctx.json(response.data, 200);
+    return ctx.json(response.data , 200);
 });
 
 // put /api/profile route updates user profile based on user id
 app.put("/:id", async (ctx: Context) => {
     const accessToken = ctx.req.header("Authorization")?.replace("Bearer ", "");
-    if (!accessToken) return ctx.json({ message: "Please provide a valid token."}, 400);
+    if (!accessToken) return ctx.json({ message: "Please provide a valid token." }, 400);
     
     const supabase = createSupabaseClient(ctx, accessToken);
 
