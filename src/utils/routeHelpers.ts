@@ -8,39 +8,39 @@ import type { Sticker } from "../types/sticker.ts";
 import type { Card } from "../types/card.ts";
 
 // function updates text if text already exist or inserts text if text does not exist
-const textHelper = async (supabase: SupabaseClient, textArr: Text[]) => {
+const textHelper = async (supabase: SupabaseClient, cardId: number, textArr: Text[]) => {
     for (const text of textArr) {
         if (text.id) {
             const response = await updateText(supabase, text);
             if (response.error) throw new Error(response.error.message);
         } else {
-            const response = await insertText(supabase, text);
+            const response = await insertText(supabase, cardId, text);
             if (response.error) throw new Error(response.error.message);
         }
     }
 };
 
 // function updates gif if gif already exist or inserts gif if gif does not exist
-const gifHelper = async (supabase: SupabaseClient, gifArr: Gif[]) => {
+const gifHelper = async (supabase: SupabaseClient, cardId: number, gifArr: Gif[]) => {
     for (const gif of gifArr) {
         if (gif.id) {
             const response = await updateGif(supabase, gif);
             if (response.error) throw new Error(response.error.message);
         } else {
-            const response = await insertGif(supabase, gif);
+            const response = await insertGif(supabase, cardId, gif);
             if (response.error) throw new Error(response.error.message);
         }
     }
 };
 
 // function updates sticker if sticker already exist or inserts sticker if sticker does not exist
-const stickerHelper = async (supabase: SupabaseClient, stickerArr: Sticker[]) => {
+const stickerHelper = async (supabase: SupabaseClient, cardId: number, stickerArr: Sticker[]) => {
     for (const sticker of stickerArr) {
         if (sticker.id) {
             const response = await updateSticker(supabase, sticker);
             if (response.error) throw new Error(response.error.message);
         } else {
-            const response = await insertSticker(supabase, sticker);
+            const response = await insertSticker(supabase, cardId, sticker);
             if (response.error) throw new Error(response.error.message);
         }
     }
@@ -110,9 +110,9 @@ export const saveDeckHelper = async (supabase: SupabaseClient, cardArr: Card[]) 
                 deleteGifHelper(supabase, card.id, card.gif);
                 deleteStickerHelper(supabase, card.id, card.sticker);
 
-                textHelper(supabase, card.text);
-                gifHelper(supabase, card.gif);
-                stickerHelper(supabase, card.sticker);
+                textHelper(supabase, card.id, card.text);
+                gifHelper(supabase, card.id, card.gif);
+                stickerHelper(supabase, card.id, card.sticker);
 
             } catch (error: any) {
                 throw new Error(error.message);
@@ -122,9 +122,9 @@ export const saveDeckHelper = async (supabase: SupabaseClient, cardArr: Card[]) 
             if (response.error) throw new Error(response.error.message);
 
             try {
-                textHelper(supabase, card.text);
-                gifHelper(supabase, card.gif);
-                stickerHelper(supabase, card.sticker);
+                textHelper(supabase, response.data[0].id, card.text);
+                gifHelper(supabase, response.data[0].id, card.gif);
+                stickerHelper(supabase, response.data[0].id, card.sticker);
 
             } catch (error: any) {
                 throw new Error(error.message);

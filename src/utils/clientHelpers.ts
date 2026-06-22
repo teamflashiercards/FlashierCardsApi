@@ -30,11 +30,11 @@ export const updateCard = async (supabase: SupabaseClient, card: Card) => {
 };
 
 // function creates a new row in the text table
-export const insertText = async (supabase: SupabaseClient, text: Text) => {
+export const insertText = async (supabase: SupabaseClient, cardId: number, text: Text) => {
     const response = await supabase
     .from("text")
     .insert({
-        card_id: text.card_id, 
+        card_id: cardId, 
         input: text.input, 
         font_size: text.font_size, 
         color: text.color, 
@@ -62,11 +62,11 @@ export const updateText = async (supabase: SupabaseClient, text: Text) => {
 };
 
 // function creates a new row in the gif table
-export const insertGif = async (supabase: SupabaseClient, gif: Gif) => {
+export const insertGif = async (supabase: SupabaseClient, cardId: number, gif: Gif) => {
     const response = await supabase
     .from("gif")
     .insert({
-        card_id: gif.card_id,
+        card_id: cardId,
         url: gif.url,
         width: gif.width,
         height: gif.height,
@@ -94,11 +94,11 @@ export const updateGif = async (supabase: SupabaseClient, gif: Gif) => {
 };
 
 // function creates a new row in the sticker table
-export const insertSticker = async (supabase: SupabaseClient, sticker: Sticker) => {
+export const insertSticker = async (supabase: SupabaseClient, cardId: number, sticker: Sticker) => {
     const response = await supabase
     .from("sticker")
     .insert({
-        card_id: sticker.card_id,
+        card_id: cardId,
         url: sticker.url,
         width: sticker.width,
         height: sticker.height,
