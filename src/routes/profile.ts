@@ -7,10 +7,7 @@ const app = new Hono();
 // get /api/profile route returns user profile
 app.get("/", async (ctx: Context) => {
     const accessToken = ctx.req.header("Authorization")?.replace("Bearer ", "");
-
-    if (!accessToken) {
-        return ctx.json({ message: "Please provide a valid token."}, 400);
-    }
+    if (!accessToken) return ctx.json({ message: "Please provide a valid token."}, 400);
 
     const supabase = createSupabaseClient(ctx, accessToken);
     
@@ -18,27 +15,19 @@ app.get("/", async (ctx: Context) => {
     .from("profile")
     .select();
     
-    if (response.error) {
-        return ctx.json(response.error, 400);
-    }
-
+    if (response.error) return ctx.json(response.error, 400);
     return ctx.json(response.data, 200);
 });
 
 // post /api/profile route creates user profile
 app.post("/", async (ctx: Context) => {
     const accessToken = ctx.req.header("Authorization")?.replace("Bearer ", "");
-
-    if (!accessToken) {
-        return ctx.json({ message: "Please provide a valid token."}, 400);
-    }
+    if (!accessToken) return ctx.json({ message: "Please provide a valid token."}, 400);
     
     const supabase = createSupabaseClient(ctx, accessToken);
-    const user = await supabase.auth.getClaims(accessToken);
 
-    if (user.error) {
-        return ctx.json(user.error, 400);
-    }
+    const user = await supabase.auth.getClaims(accessToken);
+    if (user.error) return ctx.json(user.error, 400);
 
     const userId = user.data?.claims.user_metadata?.sub;
     const newProfile = await ctx.req.json();
@@ -48,23 +37,18 @@ app.post("/", async (ctx: Context) => {
     .insert({ user_id: userId, animation: newProfile.animation })
     .select();
 
-    if (response.error) {
-        return ctx.json(response.error, 400);
-    }
-
+    if (response.error) return ctx.json(response.error, 400);
     return ctx.json(response.data, 200);
 });
 
 // put /api/profile route updates user profile based on user id
 app.put("/:id", async (ctx: Context) => {
-    const profileId = ctx.req.param("id");
     const accessToken = ctx.req.header("Authorization")?.replace("Bearer ", "");
-
-    if (!accessToken) {
-        return ctx.json({ message: "Please provide a valid token."}, 400);
-    }
+    if (!accessToken) return ctx.json({ message: "Please provide a valid token."}, 400);
     
     const supabase = createSupabaseClient(ctx, accessToken);
+
+    const profileId = ctx.req.param("id");
     const updatedProfile = await ctx.req.json();
 
     const response = await supabase
@@ -73,10 +57,7 @@ app.put("/:id", async (ctx: Context) => {
     .eq("id", profileId)
     .select();
 
-    if (response.error) {
-        return ctx.json(response.error, 400);
-    }
-
+    if (response.error) return ctx.json(response.error, 400);
     return ctx.json(response.data, 200);
 });
 

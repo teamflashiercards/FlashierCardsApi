@@ -1,3 +1,4 @@
+import type { Text } from "./text.ts";
 import type { Gif } from "./gif.ts";
 import type { Sticker } from "./sticker.ts";
 
