@@ -13,7 +13,7 @@ app.get("/", async (ctx: Context) => {
 
     const response = await supabase
     .from("deck")
-    .select();
+    .select("id, name");
 
     if (response.error) return ctx.json(response.error, 400);
     return ctx.json(response.data, 200);
@@ -29,7 +29,7 @@ app.get("/:id", async (ctx: Context) => {
 
     const response = await supabase
     .from("deck")
-    .select()
+    .select("id, name")
     .eq("id", deckId);
 
     if (response.error) return ctx.json(response.error, 400);
@@ -52,7 +52,7 @@ app.post("/", async (ctx: Context) => {
     const response = await supabase
     .from("deck")
     .insert({ user_id: userId, name: newDeck.name })
-    .select();
+    .select("id, name");
 
     if (response.error) return ctx.json(response.error, 400);
     return ctx.json(response.data, 200);
@@ -72,7 +72,7 @@ app.put("/:id", async (ctx: Context) => {
     .from("deck")
     .update({ name: updatedDeck.name })
     .eq("id", deckId)
-    .select();
+    .select("id, name");
 
     if (response.error) return ctx.json(response.error, 400);
     return ctx.json(response.data, 200);
@@ -90,7 +90,7 @@ app.delete("/:id", async (ctx: Context) => {
     .from("deck")
     .delete()
     .eq("id", deckId)
-    .select();
+    .select("id, name");
 
     if (response.error) return ctx.json(response.error, 400);
     return ctx.json(response.data, 200);
