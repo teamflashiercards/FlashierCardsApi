@@ -35,11 +35,12 @@ export const insertText = async (supabase: SupabaseClient, cardId: number, text:
     .from("text")
     .insert({
         card_id: cardId, 
-        input: text.input, 
+        input: text.input,
+        width: text.width,
         font_size: text.font_size, 
         color: text.color, 
         x: text.x, 
-        y: text.y 
+        y: text.y
     })
     .select();
     return response;
@@ -50,7 +51,8 @@ export const updateText = async (supabase: SupabaseClient, text: Text) => {
     const response = await supabase
     .from("text")
     .update({ 
-        input: text.input, 
+        input: text.input,
+        width: text.width,
         font_size: text.font_size, 
         color: text.color, 
         x: text.x, 
