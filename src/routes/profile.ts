@@ -13,7 +13,7 @@ app.get("/", async (ctx: Context) => {
     
     const response = await supabase
     .from("profile")
-    .select();
+    .select("id, animation");
     
     if (response.error) return ctx.json(response.error, 400);
     return ctx.json(response.data, 200);
@@ -35,7 +35,7 @@ app.post("/", async (ctx: Context) => {
     const response = await supabase
     .from("profile")
     .insert({ user_id: userId, animation: newProfile.animation })
-    .select();
+    .select("id, animation");
 
     if (response.error) return ctx.json(response.error, 400);
     return ctx.json(response.data , 200);
@@ -55,7 +55,7 @@ app.patch("/:id", async (ctx: Context) => {
     .from("profile")
     .update({ animation: updatedProfile.animation })
     .eq("id", profileId)
-    .select();
+    .select("id, animation");
 
     if (response.error) return ctx.json(response.error, 400);
     return ctx.json(response.data, 200);
@@ -75,7 +75,7 @@ app.put("/:id", async (ctx: Context) => {
     .from("profile")
     .update({ animation: updatedProfile.animation })
     .eq("id", profileId)
-    .select();
+    .select("id, animation");
 
     if (response.error) return ctx.json(response.error, 400);
     return ctx.json(response.data, 200);
