@@ -3,13 +3,11 @@ import type { Context } from "hono";
 import { createSupabaseClient } from "../utils/client.ts";
 
 const app = new Hono();
-//GET decks
+
+// get /api/deck returns all the decks
 app.get("/", async (ctx: Context) => {
     const accessToken = ctx.req.header("Authorization")?.replace("Bearer ", "");
-
-    if (!accessToken) {
-        return ctx.json({ message: "Please provide a valid token." }, 400);
-    }
+    if (!accessToken) return ctx.json({ message: "Please provide a valid token." }, 400);
 
     const supabase = createSupabaseClient(ctx, accessToken);
 
@@ -17,42 +15,38 @@ app.get("/", async (ctx: Context) => {
     .from("deck")
     .select("id, name");
 
+    if (response.error) return ctx.json(response.error, 400);
     return ctx.json(response.data, 200);
 });
-//get a specfic deck
+
+// get /api/deck/id returns a deck based on deck id
 app.get("/:id", async (ctx: Context) => {
     const accessToken = ctx.req.header("Authorization")?.replace("Bearer ", "");
+    if (!accessToken) return ctx.json({ message: "Please provide a valid token." }, 400);
 
-    if (!accessToken) {
-        return ctx.json({ message: "Please provide a valid token." }, 400);
-    }
-
-    const deckId = ctx.req.param("id");
     const supabase = createSupabaseClient(ctx, accessToken);
+    const deckId = ctx.req.param("id");
 
     const response = await supabase
     .from("deck")
     .select("id, name")
     .eq("id", deckId);
 
+    if (response.error) return ctx.json(response.error, 400);
     return ctx.json(response.data, 200);
 });
-//create a new deck
+
+// post /api/deck creates a new deck
 app.post("/", async (ctx: Context) => {
     const accessToken = ctx.req.header("Authorization")?.replace("Bearer ", "");
-
-    if (!accessToken) {
-        return ctx.json({ message: "Please provide a valid token." }, 400);
-    }
+    if (!accessToken) return ctx.json({ message: "Please provide a valid token." }, 400);
 
     const supabase = createSupabaseClient(ctx, accessToken);
 
-    const user = await supabase.auth.getUser(accessToken);
-    if (user.error) {
-        return ctx.json(user.error, 400);
-    }
+    const user = await supabase.auth.getClaims(accessToken);
+    if (user.error) return ctx.json(user.error, 400);
 
-    const userId = user.data.user.id;
+    const userId = user.data?.claims.user_metadata?.sub;
     const newDeck = await ctx.req.json();
 
     const response = await supabase
@@ -60,19 +54,18 @@ app.post("/", async (ctx: Context) => {
     .insert({ user_id: userId, name: newDeck.name })
     .select("id, name");
 
+    if (response.error) return ctx.json(response.error, 400);
     return ctx.json(response.data, 200);
 });
-//rename a deck
+
+// put /api/deck/id updates a deck based on deck id
 app.put("/:id", async (ctx: Context) => {
     const accessToken = ctx.req.header("Authorization")?.replace("Bearer ", "");
+    if (!accessToken) return ctx.json({ message: "Please provide a valid token." }, 400);
 
-    if (!accessToken) {
-        return ctx.json({ message: "Please provide a valid token." }, 400);
-    }
-
-    const deckId = ctx.req.param("id");
     const supabase = createSupabaseClient(ctx, accessToken);
 
+    const deckId = ctx.req.param("id");
     const updatedDeck = await ctx.req.json();
 
     const response = await supabase
@@ -81,18 +74,17 @@ app.put("/:id", async (ctx: Context) => {
     .eq("id", deckId)
     .select("id, name");
 
+    if (response.error) return ctx.json(response.error, 400);
     return ctx.json(response.data, 200);
 });
-//delete a deck
+
+// delete /api/deck/id deletes a deck based on deck id
 app.delete("/:id", async (ctx: Context) => {
     const accessToken = ctx.req.header("Authorization")?.replace("Bearer ", "");
+    if (!accessToken) return ctx.json({ message: "Please provide a valid token." }, 400);
 
-    if (!accessToken) {
-        return ctx.json({ message: "Please provide a valid token." }, 400);
-    }
-
-    const deckId = ctx.req.param("id");
     const supabase = createSupabaseClient(ctx, accessToken);
+    const deckId = ctx.req.param("id");
 
     const response = await supabase
     .from("deck")
@@ -100,11 +92,8 @@ app.delete("/:id", async (ctx: Context) => {
     .eq("id", deckId)
     .select("id, name");
 
-    if (response.error) {
-        return ctx.json(response.error, 400);
-    }
-
-    return ctx.json({ message: "Deck was successfully deleted." }, 200);
+    if (response.error) return ctx.json(response.error, 400);
+    return ctx.json(response.data, 200);
 });
 
 export default app;

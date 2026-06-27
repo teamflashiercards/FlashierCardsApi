@@ -41,30 +41,27 @@ app.post("/", async (ctx: Context) => {
     return ctx.json(response.data , 200);
 });
 
-// patch /api/profile route updates animation for the authenticated user
-app.patch("/", async (ctx: Context) => {
+// patch /api/profile/id route updates user profile based on profile id
+app.patch("/:id", async (ctx: Context) => {
     const accessToken = ctx.req.header("Authorization")?.replace("Bearer ", "");
     if (!accessToken) return ctx.json({ message: "Please provide a valid token." }, 400);
-
+    
     const supabase = createSupabaseClient(ctx, accessToken);
 
-    const user = await supabase.auth.getClaims(accessToken);
-    if (user.error) return ctx.json(user.error, 400);
-
-    const userId = user.data?.claims.user_metadata?.sub;
+    const profileId = ctx.req.param("id");
     const updatedProfile = await ctx.req.json();
 
     const response = await supabase
-        .from("profile")
-        .update({ animation: updatedProfile.animation })
-        .eq("user_id", userId)
-        .select();
+    .from("profile")
+    .update({ animation: updatedProfile.animation })
+    .eq("id", profileId)
+    .select();
 
     if (response.error) return ctx.json(response.error, 400);
     return ctx.json(response.data, 200);
 });
 
-// put /api/profile route updates user profile based on user id
+// put /api/profile/id route updates user profile based on profile id
 app.put("/:id", async (ctx: Context) => {
     const accessToken = ctx.req.header("Authorization")?.replace("Bearer ", "");
     if (!accessToken) return ctx.json({ message: "Please provide a valid token." }, 400);

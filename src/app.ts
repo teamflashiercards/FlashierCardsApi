@@ -4,8 +4,6 @@ import { env } from "hono/adapter";
 import deckRoutes from "./routes/deck.ts";
 import cardRoutes from "./routes/card.ts";
 import profileRoutes from "./routes/profile.ts";
-//import cardRoutes from "./routes/card.ts";
-//import deckRoutes from "./routes/deck.ts";
 
 const app = new Hono();
 
@@ -16,16 +14,14 @@ app.use("/api/*", cors({
         return WEB_CLIENT;
     },
     allowHeaders: ["Content-Type", "Authorization"],
-    allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowMethods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     maxAge: 600,
     credentials: true
 }));
 
 // mount routes
-app.route("/api/deck", deckRoutes);
-// app.route("/api/deck", cardRoutes);
 app.route("/api/profile", profileRoutes);
+app.route("/api/deck", deckRoutes);
 app.route("/api/card", cardRoutes);
-// app.route("/api/deck", deckRoutes);
 
 export default app;
