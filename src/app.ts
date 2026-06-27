@@ -22,6 +22,6 @@ app.use("/api/*", cors({
 // mount routes
 app.route("/api/profile", profileRoutes);
 app.route("/api/deck", deckRoutes);
-app.route("/api/card", cardRoutes);
+app.route("/api/deck", cardRoutes);
 
 export default app;

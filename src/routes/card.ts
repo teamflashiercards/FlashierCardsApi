@@ -17,7 +17,7 @@ app.get("/:id/content", async (ctx: Context) => {
     // get front of deck content
     const frontCards = await supabase
     .from("card")
-    .select("id, card_num, text(id, input, width, font_size, color, x, y), gif(id, url, width, height, x, y), sticker(id, url, width, height, x, y)")
+    .select("*, text(*), gif(*), sticker(*)")
     .match({ deck_id: deckId, card_side: "front" })
     .order("card_num", { ascending: true });
     
@@ -26,7 +26,7 @@ app.get("/:id/content", async (ctx: Context) => {
     // get back of deck content
     const backCards = await supabase
     .from("card")
-    .select("id, card_num, text(id, input, width, font_size, color, x, y), gif(id, url, width, height, x, y), sticker(id, url, width, height, x, y)")
+    .select("*, text(*), gif(*), sticker(*)")
     .match({ deck_id: deckId, card_side: "back" })
     .order("card_num", { ascending: true });
     
