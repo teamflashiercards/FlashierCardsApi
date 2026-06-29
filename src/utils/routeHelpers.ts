@@ -48,52 +48,52 @@ const stickerHelper = async (supabase: SupabaseClient, cardId: number, stickerAr
 
 // function deletes text on specified card whose id is not in textArr (request data)
 const deleteTextHelper = async (supabase: SupabaseClient, cardId: number, textArr: Text[]) => {
-    const textIds: number[] = textArr.map((text: { id: number | null; }) => text.id).filter((id: number | null) => id != null);
+    const textIds: number[] = textArr?.map((text: { id: number | null; }) => text.id).filter((id: number | null) => id != null);
     
     const response = await supabase
     .from("text")
     .delete()
     .eq("card_id", cardId)
-    .not("id", "in", `(${textIds.join()})`);
+    .not("id", "in", `(${textIds?.join()})`);
 
     if (response.error) throw new Error(response.error.message);
 };
 
 // function deletes gif on specified card whose id is not in gifArr (request data)
 const deleteGifHelper = async (supabase: SupabaseClient, cardId: number, gifArr: Gif[]) => {
-    const gifIds: number[] = gifArr.map((gif: { id: number | null; }) => gif.id).filter((id: number | null) => id != null);
+    const gifIds: number[] = gifArr?.map((gif: { id: number | null; }) => gif.id).filter((id: number | null) => id != null);
     
     const response = await supabase
     .from("gif")
     .delete()
     .eq("card_id", cardId)
-    .not("id", "in", `(${gifIds.join()})`);
+    .not("id", "in", `(${gifIds?.join()})`);
 
     if (response.error) throw new Error(response.error.message);
 };
 
 // function deletes sticker on specified card whose id is not in stickerArr (request data)
 const deleteStickerHelper = async (supabase: SupabaseClient, cardId: number, stickerArr: Sticker[]) => {
-    const stickerIds: number[] = stickerArr.map((sticker: { id: number | null; }) => sticker.id).filter((id: number | null) => id != null);
+    const stickerIds: number[] = stickerArr?.map((sticker: { id: number | null; }) => sticker.id).filter((id: number | null) => id != null);
     
     const response = await supabase
     .from("sticker")
     .delete()
     .eq("card_id", cardId)
-    .not("id", "in", `(${stickerIds.join()})`);
+    .not("id", "in", `(${stickerIds?.join()})`);
 
     if (response.error) throw new Error(response.error.message);
 };
 
 // function deletes card in specified deck whose id is not in cardArr (request data)
 export const deleteCardsHelper = async (supabase: SupabaseClient, deckId: number, cardSide: string, cardArr: Card[]) => {
-    const cardIds: number[] = cardArr.map((card: { id: number | null; }) => card.id).filter((id: number | null) => id != null);
+    const cardIds: number[] = cardArr?.map((card: { id: number | null; }) => card.id).filter((id: number | null) => id != null);
     
     const response = await supabase
     .from("card")
     .delete()
     .match({ deck_id: deckId, card_side: cardSide })
-    .not("id", "in", `(${cardIds.join()})`);
+    .not("id", "in", `(${cardIds?.join()})`);
     
     if (response.error) throw new Error(response.error.message);
 };

@@ -67,12 +67,12 @@ app.post("/:id/save", async (ctx: Context) => {
     
     try {
         // delete cards removed from the request but exist in db
-        deleteCardsHelper(supabase, Number(deckId), "front", updatedDeckContent.front_cards);
-        deleteCardsHelper(supabase, Number(deckId), "back", updatedDeckContent.back_cards);
+        await deleteCardsHelper(supabase, Number(deckId), "front", updatedDeckContent.front_cards);
+        await deleteCardsHelper(supabase, Number(deckId), "back", updatedDeckContent.back_cards);
 
         // save content on front and back side of cards
-        saveDeckHelper(supabase, updatedDeckContent.front_cards);
-        saveDeckHelper(supabase, updatedDeckContent.back_cards);
+        await saveDeckHelper(supabase, updatedDeckContent.front_cards);
+        await saveDeckHelper(supabase, updatedDeckContent.back_cards);
 
     } catch (error: any) {
         return ctx.json(error, 400);
