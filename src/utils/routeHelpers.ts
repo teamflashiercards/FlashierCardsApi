@@ -106,13 +106,13 @@ export const saveDeckHelper = async (supabase: SupabaseClient, cardArr: Card[]) 
             if (response.error) throw new Error(response.error.message);
 
             try {
-                deleteTextHelper(supabase, card.id, card.text);
-                deleteGifHelper(supabase, card.id, card.gif);
-                deleteStickerHelper(supabase, card.id, card.sticker);
+                await deleteTextHelper(supabase, card.id, card.text);
+                await deleteGifHelper(supabase, card.id, card.gif);
+                await deleteStickerHelper(supabase, card.id, card.sticker);
 
-                textHelper(supabase, card.id, card.text);
-                gifHelper(supabase, card.id, card.gif);
-                stickerHelper(supabase, card.id, card.sticker);
+                await textHelper(supabase, card.id, card.text);
+                await gifHelper(supabase, card.id, card.gif);
+                await stickerHelper(supabase, card.id, card.sticker);
 
             } catch (error: any) {
                 throw new Error(error.message);
@@ -122,9 +122,9 @@ export const saveDeckHelper = async (supabase: SupabaseClient, cardArr: Card[]) 
             if (response.error) throw new Error(response.error.message);
 
             try {
-                textHelper(supabase, response.data[0].id, card.text);
-                gifHelper(supabase, response.data[0].id, card.gif);
-                stickerHelper(supabase, response.data[0].id, card.sticker);
+                await textHelper(supabase, response.data[0].id, card.text);
+                await gifHelper(supabase, response.data[0].id, card.gif);
+                await stickerHelper(supabase, response.data[0].id, card.sticker);
 
             } catch (error: any) {
                 throw new Error(error.message);
