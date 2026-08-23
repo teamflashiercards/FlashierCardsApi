@@ -29,7 +29,7 @@ app.post("/", async (ctx: Context) => {
     const user = await supabase.auth.getClaims(accessToken);
     if (user.error) return ctx.json(user.error, 400);
 
-    const userId = user.data?.claims.user_metadata?.sub;
+    const userId = user.data?.claims.sub;
     const newProfile = await ctx.req.json();
     
     const response = await supabase

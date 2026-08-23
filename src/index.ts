@@ -3,7 +3,7 @@ import app from "./app.ts";
 import "dotenv/config";
 
 /* 
-    Description: This code is used for local development.
+    Description: This code is used to run the app for local development.
     Last updated: 6/28/2026
 */
 
