@@ -2,6 +2,11 @@ import { Hono } from "hono";
 import type { Context } from "hono";
 import { createSupabaseClient } from "../utils/client.ts";
 
+/* 
+    Description: This file contains routes that fetch, create, or update profile.
+    Last updated: 10/30/2026
+*/
+
 const app = new Hono();
 
 // get /api/profile route returns user profile
@@ -43,26 +48,6 @@ app.post("/", async (ctx: Context) => {
 
 // patch /api/profile/id route updates user profile based on profile id
 app.patch("/:id", async (ctx: Context) => {
-    const accessToken = ctx.req.header("Authorization")?.replace("Bearer ", "");
-    if (!accessToken) return ctx.json({ message: "Please provide a valid token." }, 400);
-    
-    const supabase = createSupabaseClient(ctx, accessToken);
-
-    const profileId = ctx.req.param("id");
-    const updatedProfile = await ctx.req.json();
-
-    const response = await supabase
-    .from("profile")
-    .update({ animation: updatedProfile.animation })
-    .eq("id", profileId)
-    .select("id, animation");
-
-    if (response.error) return ctx.json(response.error, 400);
-    return ctx.json(response.data, 200);
-});
-
-// put /api/profile/id route updates user profile based on profile id
-app.put("/:id", async (ctx: Context) => {
     const accessToken = ctx.req.header("Authorization")?.replace("Bearer ", "");
     if (!accessToken) return ctx.json({ message: "Please provide a valid token." }, 400);
     

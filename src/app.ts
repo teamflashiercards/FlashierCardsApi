@@ -2,8 +2,12 @@ import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { env } from "hono/adapter";
 import deckRoutes from "./routes/deck.ts";
-import cardRoutes from "./routes/card.ts";
 import profileRoutes from "./routes/profile.ts";
+
+/* 
+    Description: This file contains the middleware and routes for the app.
+    Last updated: 10/30/2026
+*/
 
 const app = new Hono();
 
@@ -22,6 +26,5 @@ app.use("/api/*", cors({
 // mount routes
 app.route("/api/profile", profileRoutes);
 app.route("/api/deck", deckRoutes);
-app.route("/api/deck", cardRoutes);
 
 export default app;
